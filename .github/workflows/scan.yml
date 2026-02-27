@@ -1,0 +1,37 @@
+name: Surebet Scanner Cron
+
+on:
+  schedule:
+    - cron: '*/2 * * * *'  # Ogni 2 minuti
+  workflow_dispatch:  # Permette trigger manuale
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run scraper
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
+        run: node scraper.js
+      
+      - name: Upload logs (opzionale)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scan-logs-${{ github.run_number }}
+          path: '*.log'
+          retention-days: 7

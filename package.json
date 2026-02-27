@@ -1,0 +1,17 @@
+{
+  "name": "surebet-scraper",
+  "version": "1.0.0",
+  "description": "Scanner automatico surebet per 10 bookmaker italiani",
+  "main": "scraper.js",
+  "scripts": {
+    "start": "node scraper.js",
+    "test": "node scraper.js --test"
+  },
+  "dependencies": {
+    "puppeteer": "^22.0.0",
+    "node-fetch": "^2.7.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
